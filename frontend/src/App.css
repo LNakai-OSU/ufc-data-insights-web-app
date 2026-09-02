@@ -1,0 +1,858 @@
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+h1, h2, h3 {
+  font-family: "Oswald", system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  text-wrap: balance;
+}
+
+.mono {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Angled "slit" divider between major sections - a structural echo of
+   the reference site's distortion motif, kept out of anything that
+   carries data (tables/charts stay undistorted and legible). */
+.section-divider {
+  height: 48px;
+  margin: 4px 0 32px;
+  position: relative;
+}
+.section-divider::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--surface);
+  clip-path: polygon(0 0, 100% 0, 100% 40%, 0 60%);
+}
+.section-divider::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--surface);
+  clip-path: polygon(0 66%, 100% 46%, 100% 100%, 0 100%);
+}
+
+/* Modal */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal-content {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 20px;
+  max-width: 640px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow);
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 22px;
+}
+
+.app-header {
+  padding: 8px 0 4px;
+}
+
+.app-header h1 {
+  margin: 0 0 4px;
+  font-family: "Anton", "Oswald", sans-serif;
+  font-size: clamp(36px, 6vw, 64px);
+  letter-spacing: 0.005em;
+  line-height: 0.95;
+  color: var(--paper);
+}
+
+.app-header .muted {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.error-text {
+  background: rgba(198, 47, 34, 0.08);
+  color: var(--bad);
+  border: 1px solid rgba(198, 47, 34, 0.25);
+  border-radius: 4px;
+  padding: 10px 14px;
+  margin: 12px 0;
+  font-size: 0.9em;
+}
+
+/* Overview cards */
+.card-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin: 20px 0;
+}
+
+.stat-card {
+  background: var(--surface);
+  padding: 20px 16px;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+.stat-card:hover {
+  background: var(--surface-raised);
+}
+
+.stat-value {
+  font-family: "Anton", sans-serif;
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+}
+
+.stat-label {
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* Charts */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  margin-bottom: 32px;
+}
+
+.chart-card.wide {
+  grid-column: span 2;
+}
+
+.chart-card {
+  background: var(--surface);
+  padding: 18px;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: reveal 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart-card {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes reveal {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.chart-card h3 {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.chart-tooltip {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 8px 10px;
+  font-size: 0.85em;
+  color: var(--paper);
+  box-shadow: var(--shadow);
+}
+
+/* World map */
+.map-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.map-header h3 {
+  margin: 0;
+}
+
+.year-display {
+  font-family: "Anton", sans-serif;
+  font-size: 22px;
+  color: var(--accent-red);
+  font-variant-numeric: tabular-nums;
+}
+
+.year-slider {
+  width: 100%;
+  margin: 8px 0 12px;
+  accent-color: var(--accent-red);
+}
+
+.map-layout {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.map-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+
+.country-panel {
+  width: 220px;
+  flex-shrink: 0;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 10px 12px;
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.country-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.country-panel-header h4 {
+  margin: 0;
+  font-size: 0.9em;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 0 2px;
+}
+
+.close-btn:hover {
+  color: var(--paper);
+}
+
+.country-fighter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.82em;
+}
+
+.country-fighter-list li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.country-fighter-list .tag {
+  float: right;
+}
+
+.map-tooltip {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 6px 10px;
+  font-size: 0.82em;
+  color: var(--paper);
+  box-shadow: var(--shadow);
+  pointer-events: none;
+}
+
+.map-caveat {
+  margin: 8px 0 0;
+}
+
+/* Panels (fighter search, chat) */
+.panel-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 16px;
+  min-height: 320px;
+  margin-bottom: 20px;
+}
+
+.panel h3 {
+  margin: 0 0 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.text-input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface-raised);
+  color: var(--paper);
+  font-size: 14px;
+}
+
+.text-input:focus {
+  outline: none;
+  border-color: var(--accent-red);
+}
+
+/* Fighter search */
+.fighter-search-body {
+  margin-top: 12px;
+  display: flex;
+  gap: 16px;
+}
+
+.fighter-results {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-width: 180px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.fighter-result-btn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  color: var(--paper);
+  padding: 6px 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.fighter-result-btn:hover {
+  background: var(--accent-red-soft);
+}
+
+.link-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: var(--accent-red);
+  cursor: pointer;
+  text-align: left;
+}
+
+.link-btn:hover {
+  text-decoration: underline;
+}
+
+.tag {
+  display: inline-block;
+  margin-left: 6px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.7em;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+  background: var(--surface-raised);
+  border-radius: 3px;
+  padding: 2px 6px;
+}
+
+.tag.gold-tag {
+  color: var(--gold);
+  background: var(--gold-soft);
+}
+
+.title-timeline {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.85em;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.title-timeline li {
+  padding: 7px 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.5;
+}
+
+.fighter-detail {
+  flex: 1;
+  min-width: 0;
+}
+
+.fighter-detail h4,
+.event-detail h4 {
+  margin: 0 0 4px;
+  font-family: "Oswald", sans-serif;
+  text-transform: uppercase;
+}
+
+.event-detail .fight-history {
+  margin-top: 10px;
+}
+
+.fighter-bio-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  font-size: 0.85em;
+  margin-bottom: 12px;
+}
+
+.fighter-bio-grid .muted {
+  display: block;
+  font-size: 0.85em;
+}
+
+.fight-history {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82em;
+}
+
+.fight-history th {
+  text-align: left;
+  font-family: "IBM Plex Mono", monospace;
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.92em;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--border);
+  padding: 4px 6px;
+}
+
+.fight-history td {
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--border);
+}
+
+.fight-history tr:hover td {
+  background: var(--surface-raised);
+}
+
+.outcome {
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.outcome-win {
+  color: var(--good);
+}
+
+.outcome-loss {
+  color: var(--bad);
+}
+
+.outcome-draw,
+.outcome-no_contest {
+  color: var(--text-muted);
+}
+
+/* Chat panel - styled after a modern chat composer (Claude-style):
+   a rounded auto-growing input with an inline circular send button,
+   distinct user/assistant conversation turns, and the SQL disclosure
+   presented as a collapsible "tool call" chip rather than a plain link. */
+.claude-chat-panel {
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.claude-composer {
+  position: relative;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 14px 52px 14px 18px;
+  transition: border-color 0.15s;
+}
+
+.claude-composer:focus-within {
+  border-color: var(--accent-red);
+}
+
+.claude-composer-input {
+  width: 100%;
+  display: block;
+  border: none;
+  background: transparent;
+  color: var(--paper);
+  font-family: inherit;
+  font-size: 14.5px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.claude-composer-input::placeholder {
+  color: var(--text-muted);
+}
+
+.claude-send-btn {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: var(--accent-red);
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.1s;
+}
+
+.claude-send-btn:not(:disabled):hover {
+  filter: brightness(1.1);
+}
+
+.claude-send-btn:not(:disabled):active {
+  transform: scale(0.92);
+}
+
+.claude-send-btn:disabled {
+  background: var(--surface);
+  color: var(--text-muted);
+  cursor: default;
+}
+
+.claude-suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.claude-suggestion-card {
+  text-align: left;
+  padding: 12px 16px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-secondary);
+  font-size: 13.5px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.claude-suggestion-card:hover {
+  border-color: var(--accent-red);
+  color: var(--paper);
+  background: var(--accent-red-soft);
+}
+
+.claude-conversation {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.claude-turn-user {
+  align-self: flex-end;
+  max-width: 80%;
+  background: var(--surface-raised);
+  color: var(--paper);
+  padding: 10px 16px;
+  border-radius: 16px 16px 4px 16px;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+.claude-turn-assistant {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--paper);
+}
+
+.claude-turn-assistant p {
+  margin: 0 0 10px;
+}
+
+.claude-tool-chip {
+  margin-top: 4px;
+}
+
+.claude-tool-chip summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  list-style: none;
+  width: fit-content;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11.5px;
+}
+
+.claude-tool-chip summary::-webkit-details-marker {
+  display: none;
+}
+
+.claude-tool-chip summary:hover {
+  color: var(--paper);
+}
+
+.claude-tool-chip[open] summary {
+  margin-bottom: 8px;
+}
+
+.claude-tool-icon {
+  font-size: 11px;
+}
+
+/* Two-value "compare" widgets (championship rounds fade, home/away,
+   title vs. non-title finish rate) */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.compare-cell {
+  text-align: center;
+  padding: 10px 8px;
+  border-radius: 4px;
+  background: var(--surface-raised);
+}
+
+.compare-cell .compare-value {
+  font-family: "Anton", sans-serif;
+  font-size: 24px;
+  color: var(--paper);
+}
+
+.compare-cell .compare-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.compare-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.compare-stat-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85em;
+}
+
+.compare-stat-row .mono {
+  text-align: center;
+  font-size: 0.9em;
+}
+
+.compare-stat-row .stat-name {
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.compare-stat-row .left {
+  text-align: right;
+  font-weight: 600;
+}
+
+.compare-stat-row .right {
+  text-align: left;
+  font-weight: 600;
+}
+
+.sql-block {
+  /* Deliberately always dark, independent of the page theme - a code/
+     terminal block reading dark-on-light-page is a normal, expected
+     convention, unlike everything else here which follows --ink/--paper. */
+  background: #1a1a19;
+  color: #e1e0d9;
+  border: 1px solid var(--border);
+  padding: 8px 10px;
+  border-radius: 4px;
+  font-size: 0.78em;
+  overflow-x: auto;
+  margin-top: 6px;
+  white-space: pre-wrap;
+}
+
+/* Glove-touch loading indicator - replaces spinners/progress bars everywhere */
+.glove-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 0;
+}
+
+.glove-loader-stage {
+  position: relative;
+}
+
+.glove-loader-sm .glove-loader-stage { width: 96px; height: 40px; }
+.glove-loader-md .glove-loader-stage { width: 160px; height: 66px; }
+.glove-loader-lg .glove-loader-stage { width: 220px; height: 90px; }
+
+.glove {
+  position: absolute;
+  top: 50%;
+  width: 55%;
+  height: auto;
+}
+
+.glove-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5));
+}
+
+.glove-left {
+  left: 0;
+  animation: glove-bump-left 1.7s cubic-bezier(0.5, 0, 0.2, 1) infinite;
+}
+
+.glove-right {
+  right: 0;
+  animation: glove-bump-right 1.7s cubic-bezier(0.5, 0, 0.2, 1) infinite;
+}
+
+.glove-flash {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12%;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, #fff 0%, var(--accent-red) 45%, transparent 75%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  animation: glove-impact-flash 1.7s cubic-bezier(0.5, 0, 0.2, 1) infinite;
+}
+
+@keyframes glove-bump-left {
+  0%   { transform: translateY(-50%) translateX(0) rotate(-6deg); }
+  38%  { transform: translateY(-50%) translateX(32%) rotate(2deg); }
+  46%  { transform: translateY(-50%) translateX(28%) rotate(-1deg); }
+  60%, 100% { transform: translateY(-50%) translateX(0) rotate(-6deg); }
+}
+
+@keyframes glove-bump-right {
+  0%   { transform: translateY(-50%) translateX(0) rotate(6deg) scaleX(-1); }
+  38%  { transform: translateY(-50%) translateX(-32%) rotate(-2deg) scaleX(-1); }
+  46%  { transform: translateY(-50%) translateX(-28%) rotate(1deg) scaleX(-1); }
+  60%, 100% { transform: translateY(-50%) translateX(0) rotate(6deg) scaleX(-1); }
+}
+
+@keyframes glove-impact-flash {
+  0%, 40% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+  46%     { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+  58%     { transform: translate(-50%, -50%) scale(2.2); opacity: 0; }
+  100%    { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .glove-left, .glove-right, .glove-flash {
+    animation: none;
+  }
+}
+
+.glove-loader-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.glove-loader-dots::after {
+  content: "";
+  animation: glove-loader-dots 1.4s steps(4) infinite;
+}
+
+@keyframes glove-loader-dots {
+  0% { content: ""; }
+  25% { content: "."; }
+  50% { content: ".."; }
+  75% { content: "..."; }
+  100% { content: ""; }
+}
+
+@media (max-width: 900px) {
+  .card-row,
+  .chart-grid,
+  .panel-grid,
+  .fighter-bio-grid {
+    grid-template-columns: 1fr;
+  }
+  .chart-card.wide {
+    grid-column: span 1;
+  }
+  .map-layout {
+    flex-direction: column;
+  }
+  .country-panel {
+    width: 100%;
+  }
+}

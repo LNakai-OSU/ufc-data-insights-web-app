@@ -1,0 +1,41 @@
+/* Token names (--ink, --paper) kept from the dark theme this replaces -
+   --ink is now the light page background and --paper the dark text
+   color, an inversion of what the names literally suggest, rather than
+   renaming every reference across App.css/colors.js/WorldMap.jsx. */
+:root {
+  color-scheme: light;
+  --ink: #f7f5f0;
+  --surface: #ffffff;
+  --surface-raised: #f0eee6;
+  --paper: #14171f;
+  --text-secondary: #55524a;
+  --text-muted: #8a8577;
+  --accent-red: #d1372a;
+  --accent-red-soft: rgba(209, 55, 42, 0.1);
+  --accent-blue: #2a78d6;
+  --accent-blue-soft: rgba(42, 120, 214, 0.1);
+  --gold: #a3782c;
+  --gold-soft: rgba(163, 120, 44, 0.14);
+  --good: #1a8a3d;
+  --bad: #c62f22;
+  --border: rgba(20, 23, 31, 0.1);
+  --grid-line: rgba(20, 23, 31, 0.045);
+  --shadow: 0 1px 2px rgba(20, 23, 31, 0.05), 0 16px 32px rgba(20, 23, 31, 0.06);
+
+  font: 15px/1.5 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--ink);
+  color: var(--paper);
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 48px 48px;
+}

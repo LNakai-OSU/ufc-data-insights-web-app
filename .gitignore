@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+data/raw/*.csv
+data/processed/*.csv
+data/raw_html_ufc_com/
+data/birthplace_scrape_failures.csv
