@@ -25,7 +25,7 @@ Attribution belongs in the final project README/dashboard footer.
 - [x] Normalized Postgres schema (`db/schema.sql`)
 - [x] Load script (`db/load.py`) - raw CSVs into the schema
 - [x] NL-to-SQL chat assistant (`chat/`, CLI via `ask.py`) - live model call not yet smoke-tested (needs `ANTHROPIC_API_KEY`)
-- [x] Dashboard (`backend/` FastAPI + `frontend/` React) - backend fully verified live; frontend built/linted clean but not checked in an actual browser (see Dashboard section)
+- [x] Dashboard (`backend/` FastAPI + `frontend/` React) - backend fully verified live; frontend rendering verified via headless Chrome, see [Screenshots](#screenshots)
 
 ## Setup
 
@@ -155,6 +155,52 @@ The backend exposes read-only stats endpoints (`/api/overview`,
 `ufc_stats_readonly` role as the chat assistant - the dashboard API has no
 reason to hold write access either.
 
+### Screenshots
+
+![Hero section and chat assistant](screenshots/01-hero-and-chat-assistant.png)
+**Chat assistant.** The Claude-style composer at the top of the page - an
+auto-growing textarea, circular send button, and suggested-question cards
+("Do southpaws have a higher win rate than orthodox fighters?"). Submitted
+questions go through `/api/chat` to the NL-to-SQL agent described above; the
+generated SQL is shown in a collapsible pill under the answer so the query
+is never a black box. Below it, the top of the world map choropleth.
+
+![World map country detail and fighter lookup](screenshots/02-world-map-and-fighter-lookup.png)
+**World map + fighter lookup.** The map's transparency footnotes (which
+countries have no data yet, and which recognized-but-unmapped country
+names got excluded, e.g. "Canary Islands"), followed by the fighter search
+panel with a live lookup of Jon Jones showing his full, accurate fight
+history pulled straight from the database - each opponent and event name
+links out via the shared `useDetailNav` click-through pattern.
+
+![Overview stats and main chart grid](screenshots/03-overview-stats-and-charts.png)
+**Overview cards + core charts.** The four headline stat cards (4,613
+fighters, 8,858 fights, 786 events, 15 weight classes), then "Win rate by
+stance" (with its hover tooltip open, showing Open Stance fighters at a
+54.2% win rate) and the "Method of victory" donut breakdown.
+
+![Weight class distribution and division widgets](screenshots/04-weight-class-and-division-widgets.png)
+**Weight class + division widgets.** Fight counts per weight class, the
+Division Leaderboard (wins/fights by fighter, filterable by division/
+year/month), and Division Rankings showing the real UFC.com champion +
+ranked contenders for lightweight, scraped as described above.
+
+![More insights widgets, part 1](screenshots/05-more-insights-part1.png)
+**More insights (1/3).** Championship-rounds fade (early vs. late-round
+stats in fights that reach round 4+), win rate by reach advantage, and the
+start of striking accuracy by age / fight pace over time.
+
+![More insights widgets, part 2](screenshots/06-more-insights-part2.png)
+**More insights (2/3).** Striking accuracy by age, fight pace over time,
+split-decision rate over time, the home-country-effect card, stance
+matchup win rates, and volume-vs-accuracy - which style of fighter
+actually wins more.
+
+![More insights widgets, part 3](screenshots/07-more-insights-part3.png)
+**More insights (3/3).** Current win streaks (with average opponent win
+rate as a strength-of-schedule proxy), rivalries fought 2+ times, and
+first-round finish rate by division.
+
 ### World map: fighters by country over time
 
 `WorldMap.jsx` renders a choropleth (react-simple-maps + a local
@@ -231,11 +277,11 @@ via curl, including a 404 case and confirming `/api/chat` fails with a clean
 from the Vite dev server's origin confirmed working (`Access-Control-Allow-Origin`
 header present). The frontend builds and lints clean (`npm run build`,
 `npm run lint`).
-**Not yet verified:** actual rendering in a browser - I don't have one
-available in this environment. Before calling this done, open
-`http://localhost:5173` yourself with both servers running and check that
-the charts render, the fighter search/detail view works, and (once
-`ANTHROPIC_API_KEY` is set) the chat panel returns a real answer.
+**Rendering verified** via headless Chrome (Playwright) against both dev
+servers running locally - see the [Screenshots](#screenshots) above. The
+chat panel itself still needs a live check once `ANTHROPIC_API_KEY` is
+set; without it, `/api/chat` correctly returns a clean 503 rather than
+crashing.
 
 ### "More insights" - 16 additional questions
 
