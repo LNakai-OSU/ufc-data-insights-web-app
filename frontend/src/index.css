@@ -1,26 +1,82 @@
-/* Token names (--ink, --paper) kept from the dark theme this replaces -
-   --ink is now the light page background and --paper the dark text
-   color, an inversion of what the names literally suggest, rather than
-   renaming every reference across App.css/colors.js/WorldMap.jsx. */
+/* =========================================================================
+   Material 3 design system tokens.
+   Color roles generated algorithmically (HCT tonal-spot, seed #D1372A - the
+   app's existing "red corner" accent, formalized into a real tonal system)
+   via Google's @material/material-color-utilities - the tertiary role landed
+   on a gold naturally, which happens to match the belt/ranking accent this
+   app already used. The legacy variable names (--ink, --paper, --surface...)
+   are kept as aliases onto the new roles so none of the ~30 chart/table
+   components needed touching - only what they resolve to changed.
+
+   Shape stays deliberately flat: this app's "fight-card newspaper" identity
+   (hairline-grid card rows, sharp corners, no elevation shadows) is a real
+   M3-compatible choice - the spec's shape scale explicitly runs from "none"
+   to "full," and staying near the "none/extra-small" end is a valid brand
+   decision, not a deviation. Chart series colors (colors.js) stay untouched -
+   those are validated dataviz encodings, not UI chrome.
+   ========================================================================= */
+
 :root {
   color-scheme: light;
-  --ink: #f7f5f0;
-  --surface: #ffffff;
-  --surface-raised: #f0eee6;
-  --paper: #14171f;
-  --text-secondary: #55524a;
-  --text-muted: #8a8577;
-  --accent-red: #d1372a;
-  --accent-red-soft: rgba(209, 55, 42, 0.1);
-  --accent-blue: #2a78d6;
-  --accent-blue-soft: rgba(42, 120, 214, 0.1);
-  --gold: #a3782c;
-  --gold-soft: rgba(163, 120, 44, 0.14);
+
+  /* Canonical M3 roles */
+  --md-sys-color-primary: #904a41;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-primary-container: #ffdad5;
+  --md-sys-color-on-primary-container: #73342b;
+  --md-sys-color-secondary: #775652;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-secondary-container: #ffdad5;
+  --md-sys-color-on-secondary-container: #5d3f3b;
+  --md-sys-color-tertiary: #705c2e;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-tertiary-container: #fcdfa6;
+  --md-sys-color-on-tertiary-container: #574419;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-on-error-container: #93000a;
+  --md-sys-color-background: #fff8f7;
+  --md-sys-color-on-background: #231918;
+  --md-sys-color-surface: #fff8f7;
+  --md-sys-color-on-surface: #231918;
+  --md-sys-color-surface-variant: #f5ddda;
+  --md-sys-color-on-surface-variant: #534341;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-container-low: #fff0ee;
+  --md-sys-color-surface-container: #fceae7;
+  --md-sys-color-surface-container-high: #f7e4e1;
+  --md-sys-color-surface-container-highest: #f1dedc;
+  --md-sys-color-outline: #857370;
+  --md-sys-color-outline-variant: #d8c2be;
+  --md-sys-color-inverse-surface: #392e2c;
+  --md-sys-color-inverse-on-surface: #ffedea;
+
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-full: 999px;
+
+  --md-sys-elevation-1: 0 1px 2px 0 rgba(35, 25, 24, 0.14), 0 1px 3px 1px rgba(35, 25, 24, 0.08);
+  --md-sys-elevation-2: 0 1px 2px 0 rgba(35, 25, 24, 0.16), 0 4px 10px 1px rgba(35, 25, 24, 0.08);
+
+  /* Legacy aliases - same tokens, names the rest of the app already uses */
+  --ink: var(--md-sys-color-background);
+  --surface: var(--md-sys-color-surface-container-low);
+  --surface-raised: var(--md-sys-color-surface-container-high);
+  --paper: var(--md-sys-color-on-surface);
+  --text-secondary: var(--md-sys-color-on-surface-variant);
+  --text-muted: var(--md-sys-color-outline);
+  --accent-red: var(--md-sys-color-primary);
+  --accent-red-soft: var(--md-sys-color-primary-container);
+  --gold: var(--md-sys-color-tertiary);
+  --gold-soft: var(--md-sys-color-tertiary-container);
   --good: #1a8a3d;
   --bad: #c62f22;
-  --border: rgba(20, 23, 31, 0.1);
-  --grid-line: rgba(20, 23, 31, 0.045);
-  --shadow: 0 1px 2px rgba(20, 23, 31, 0.05), 0 16px 32px rgba(20, 23, 31, 0.06);
+  --border: var(--md-sys-color-outline-variant);
+  --grid-line: rgba(35, 25, 24, 0.06);
+  --shadow: var(--md-sys-elevation-1);
 
   font: 15px/1.5 "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
