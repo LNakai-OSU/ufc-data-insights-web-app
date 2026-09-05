@@ -339,7 +339,6 @@ h1, h2, h3 {
 .text-input:focus {
   outline: none;
   border-color: var(--accent-red);
-  box-shadow: inset 0 0 0 1px var(--accent-red);
 }
 
 /* Fighter search */
@@ -515,7 +514,6 @@ h1, h2, h3 {
 
 .claude-composer:focus-within {
   border-color: var(--accent-red);
-  box-shadow: inset 0 0 0 1px var(--accent-red);
 }
 
 .claude-composer-input {
@@ -553,23 +551,11 @@ h1, h2, h3 {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  isolation: isolate;
-  transition: transform 0.1s;
+  transition: filter 0.15s, transform 0.1s;
 }
 
-.claude-send-btn::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: #ffffff;
-  opacity: 0;
-  transition: opacity 0.15s ease;
-  z-index: -1;
-}
-
-.claude-send-btn:not(:disabled):hover::before {
-  opacity: 0.12;
+.claude-send-btn:not(:disabled):hover {
+  filter: brightness(1.1);
 }
 
 .claude-send-btn:not(:disabled):active {

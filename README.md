@@ -128,26 +128,6 @@ validator were somehow skipped.
 **Not yet verified:** an actual live call through `chat/agent.py`/`ask.py` -
 this needs `ANTHROPIC_API_KEY`, which isn't set in this environment yet.
 
-## Design system: Material 3, as a fight-card newspaper
-
-The UI's color roles are generated algorithmically from the app's existing
-"red corner" accent (`#D1372A`) via Google's `@material/material-color-utilities`
-HCT tonal-spot algorithm - the same math behind Material You - which is also
-where the gold tertiary color came from (derived, not picked; it happened to
-land right on the belt/ranking accent this app already used). Legacy CSS
-variable names (`--ink`, `--paper`, `--accent-red`, ...) are kept as aliases
-onto the new M3 roles so the ~30 chart/table components needed no changes -
-only what the tokens resolve to did.
-
-Shape stays deliberately flat and sharp-cornered: this app's identity is a
-fight-card newspaper/broadcast grid (hairline dividers, edge-to-edge stat
-cards, no drop shadows), and M3's shape scale explicitly runs from "none" to
-"full" - staying near the flat end is a valid brand choice the spec
-accommodates, not a deviation from it. The chart series palette
-(`colors.js`) is untouched on purpose - those categorical/sequential colors
-are validated for the dataviz they encode, and repainting them to match a UI
-accent would break what they're showing.
-
 ## Dashboard
 
 `backend/` (FastAPI) + `frontend/` (React + Vite + Recharts).
