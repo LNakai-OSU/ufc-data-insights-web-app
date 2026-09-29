@@ -3,6 +3,10 @@
 Data pipeline + database + dashboard + natural-language query assistant
 for UFC fighter and fight stats (dashboard/assistant in progress).
 
+Requires a live Postgres database, FastAPI backend, and the Claude API for
+the chat assistant, so there's no static GitHub Pages build - run it
+locally with the instructions below.
+
 ## Data source
 
 Originally planned to scrape [ufcstats.com](http://ufcstats.com) directly,
