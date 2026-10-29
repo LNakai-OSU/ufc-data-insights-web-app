@@ -1,16 +1,12 @@
 # UFC Fighter Stats
 
 **[Try it live](https://lnakai-osu.github.io/ufc-data-insights-web-app/)** - the full dashboard running in
-your browser, no install. (The live demo reads a static snapshot of the database; the
+your browser, no install. Running it for real needs Postgres, the FastAPI backend and a Claude API key - see the setup below. (The live demo reads a static snapshot of the database; the
 Claude chat assistant is switched off there because it needs a database and an API key -
 run it locally to use it.)
 
 Data pipeline + database + dashboard + natural-language query assistant
 for UFC fighter and fight stats (dashboard/assistant in progress).
-
-Requires a live Postgres database, FastAPI backend, and the Claude API for
-the chat assistant, so there's no static GitHub Pages build - run it
-locally with the instructions below.
 
 ## Data source
 
