@@ -1,6 +1,51 @@
-const BASE_URL = "http://localhost:8000";
+const BASE_URL = "http://localhost:8076";
+
+// Static demo build (GitHub Pages): no backend, so every response comes from the
+// JSON snapshot that scripts/export_demo_data.py wrote to public/demo-data/.
+export const DEMO = import.meta.env.VITE_DEMO === "true";
+const DEMO_DIR = `${import.meta.env.BASE_URL}demo-data/`;
+
+// Decoded path plus sorted, decoded query. Mirrors demo_key() in the exporter.
+function demoKey(path) {
+  const url = new URL(path, "http://demo");
+  const query = [...url.searchParams].sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+    .map(([k, v]) => `${k}=${v}`).join("&");
+  return decodeURIComponent(url.pathname) + (query ? `?${query}` : "");
+}
+
+const demoFiles = new Map();
+function demoFile(name) {
+  if (!demoFiles.has(name)) {
+    demoFiles.set(name, fetch(DEMO_DIR + name).then((res) => {
+      if (!res.ok) throw new Error(`Demo data unavailable (${name}: ${res.status})`);
+      return res.json();
+    }));
+  }
+  return demoFiles.get(name);
+}
+
+async function demoJSON(path) {
+  const key = demoKey(path);
+  const detail = key.match(/^\/api\/(fighters|events)\/(.+)$/);
+  if (detail) {
+    const shard = await demoFile(`${detail[1]}-${detail[2][0]}.json`);
+    if (!(detail[2] in shard)) throw new Error("Not found");
+    return shard[detail[2]];
+  }
+  if (key.startsWith("/api/fighters?")) {
+    const q = new URL(path, "http://demo").searchParams.get("q").trim().toLowerCase();
+    if (!q) return [];
+    const index = await demoFile("fighters-index.json");
+    return index.filter((f) =>
+      `${f.first_name} ${f.last_name}`.toLowerCase().includes(q) || (f.nickname || "").toLowerCase().includes(q),
+    ).slice(0, 10);
+  }
+  // A missing key is an empty result: the exporter omits empty lists.
+  return (await demoFile("core.json"))[key] ?? [];
+}
 
 async function getJSON(path) {
+  if (DEMO) return demoJSON(path);
   const res = await fetch(`${BASE_URL}${path}`);
   if (!res.ok) {
     const body = await res.json().catch(() => ({}));
@@ -134,6 +179,11 @@ export function getRivalries() {
 }
 
 export async function askChat(question) {
+  if (DEMO) {
+    throw new Error(
+      "The assistant needs a live database and a Claude API key, so it is switched off in this static demo. Clone the repo to run it.",
+    );
+  }
   const res = await fetch(`${BASE_URL}/api/chat`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

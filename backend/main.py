@@ -1,7 +1,7 @@
 """FastAPI backend for the UFC stats dashboard.
 
 Run from the project root:
-    uvicorn backend.main:app --reload --port 8000
+    uvicorn backend.main:app --reload --port 8076
 """
 from __future__ import annotations
 

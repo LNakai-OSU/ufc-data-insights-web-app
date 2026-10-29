@@ -11,7 +11,7 @@ import Modal from "./Modal";
 // 50m (not 110m) resolution specifically because the 110m atlas drops small
 // countries entirely (Cabo Verde, Guam) rather than just naming them
 // differently - no override in countryNameMap.js can fix a missing shape.
-const GEO_URL = "/countries-50m.json";
+const GEO_URL = `${import.meta.env.BASE_URL}countries-50m.json`;
 // Sequential blue ramp (magnitude encoding), light-to-dark against the
 // light map surface - on a light ground darker reads as "more" (see
 // colors.js for the same light-mode blue used elsewhere).

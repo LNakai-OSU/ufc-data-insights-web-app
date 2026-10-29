@@ -57,7 +57,7 @@ export default function App() {
 
       {loadError && (
         <div className="error-text">
-          Couldn't load dashboard data: {loadError}. Is the backend running on port 8000?
+          Couldn't load dashboard data: {loadError}. Is the backend running on port 8076?
         </div>
       )}
 
